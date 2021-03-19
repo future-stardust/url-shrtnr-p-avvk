@@ -5,18 +5,15 @@ import edu.kpi.testcourse.entities.User;
 import edu.kpi.testcourse.storage.UrlRepository;
 import edu.kpi.testcourse.storage.UrlRepository.AliasAlreadyExist;
 import edu.kpi.testcourse.storage.UserRepository;
+import java.util.List;
 
-/**
- * Business logic of the URL shortener application.
- */
+/** Business logic of the URL shortener application. */
 public class Logic {
   private final UserRepository users;
   private final UrlRepository urls;
   private final HashUtils hashUtils;
 
-  /**
-   * Creates an instance.
-   */
+  /** Creates an instance. */
   public Logic(UserRepository users, UrlRepository urls) {
     this.users = users;
     this.urls = urls;
@@ -60,7 +57,6 @@ public class Logic {
    * @param email an email of a user that creates the alias
    * @param url a full URL
    * @param alias a proposed alias
-   *
    * @return a shortened URL
    */
   public String createNewAlias(String email, String url, String alias) throws AliasAlreadyExist {
@@ -68,12 +64,12 @@ public class Logic {
     if (alias == null || alias.isEmpty()) {
       // TODO: Generate short alias
       throw new UnsupportedOperationException("Is not implemented yet");
+
     } else {
       finalAlias = alias;
     }
 
     urls.createUrlAlias(new UrlAlias(finalAlias, url, email));
-
     return finalAlias;
   }
 
@@ -93,13 +89,29 @@ public class Logic {
     return null;
   }
 
+  /** Deletes user alias */
+  public boolean deleteUserAlias(String email, String alias) {
+    List<UrlAlias> userAliases = urls.getAllAliasesForUser(email);
+    for (UrlAlias userAlias : userAliases) {
+      if (userAlias.alias().equals(alias)) {
+        urls.deleteUrlAlias(email, alias);
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
-   * Error for situation when we are trying to register already registered user.
+   * getAllAliasesForUser
    */
+  public List<UrlAlias> getUserAliases(String email){
+    return urls.getAllAliasesForUser(email);
+  }
+
+  /** Error for situation when we are trying to register already registered user. */
   public static class UserIsAlreadyCreated extends Throwable {
     public UserIsAlreadyCreated() {
       super("User with such email is already created");
     }
   }
-
 }
