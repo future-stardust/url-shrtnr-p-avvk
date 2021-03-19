@@ -81,6 +81,19 @@ class LogicTest {
   }
 
   @Test
+  void shouldCreateRandomVersionOfUrl() {
+    // GIVEN
+    UrlRepositoryFakeImpl urls = new UrlRepositoryFakeImpl();
+    Logic logic = createLogic(urls);
+
+    // WHEN
+    var shortUrl = logic.createNewAlias("aaa@bbb.com", "http://g.com/loooong_url", null);
+
+    // THEN
+    assertThat(logic.findFullUrl(shortUrl)).isEqualTo("http://g.com/loooong_url");
+  }
+
+  @Test
   void shouldNotAllowToCreateSameAliasTwice() {
     // GIVEN
     Logic logic = createLogic();

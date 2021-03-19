@@ -68,8 +68,7 @@ public class Logic {
   public String createNewAlias(String email, String url, String alias) throws AliasAlreadyExist {
     String finalAlias;
     if (alias == null || alias.isEmpty()) {
-      // TODO: Generate short alias
-      throw new UnsupportedOperationException("Is not implemented yet");
+      finalAlias = new RandomGenetaror().generate();
 
     } else {
       finalAlias = alias;
