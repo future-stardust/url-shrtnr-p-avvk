@@ -4,11 +4,13 @@ import edu.kpi.testcourse.entities.UrlAlias;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 /**
  * An in-memory fake implementation of {@link UrlRepository}.
  */
 public class UrlRepositoryFakeImpl implements UrlRepository {
+
   private final HashMap<String, UrlAlias> aliases = new HashMap<>();
 
   @Override
@@ -21,19 +23,27 @@ public class UrlRepositoryFakeImpl implements UrlRepository {
   }
 
   @Override
-  public @Nullable UrlAlias findUrlAlias(String alias) {
+  public @Nullable
+  UrlAlias findUrlAlias(String alias) {
     return aliases.get(alias);
   }
 
   @Override
   public void deleteUrlAlias(String email, String alias) {
-    // TODO: We should implement it
-    throw new UnsupportedOperationException();
+    UrlAlias savedAlias = aliases.get(alias);
+    if (savedAlias != null && savedAlias.email().equals(email)) {
+      aliases.remove(alias);
+    }
   }
 
   @Override
   public List<UrlAlias> getAllAliasesForUser(String userEmail) {
-    // TODO: We should implement it
-    throw new UnsupportedOperationException();
+    var userAliases = new ArrayList<UrlAlias>();
+    for (UrlAlias alias : aliases.values()) {
+      if (alias.email().equals(userEmail)) {
+        userAliases.add(alias);
+      }
+    }
+    return userAliases;
   }
 }
