@@ -1,19 +1,25 @@
 package edu.kpi.testcourse.logic;
 
+import java.util.List;
+
 import edu.kpi.testcourse.entities.UrlAlias;
 import edu.kpi.testcourse.entities.User;
 import edu.kpi.testcourse.storage.UrlRepository;
 import edu.kpi.testcourse.storage.UrlRepository.AliasAlreadyExist;
 import edu.kpi.testcourse.storage.UserRepository;
-import java.util.List;
 
-/** Business logic of the URL shortener application. */
+/**
+ * Business logic of the URL shortener application.
+ */
 public class Logic {
+
   private final UserRepository users;
   private final UrlRepository urls;
   private final HashUtils hashUtils;
 
-  /** Creates an instance. */
+  /**
+   * Creates an instance.
+   */
   public Logic(UserRepository users, UrlRepository urls) {
     this.users = users;
     this.urls = urls;
@@ -23,7 +29,7 @@ public class Logic {
   /**
    * Create a new user.
    *
-   * @param email users email
+   * @param email    users email
    * @param password users password
    * @throws UserIsAlreadyCreated is thrown if user is already created
    */
@@ -38,7 +44,7 @@ public class Logic {
   /**
    * Gives an answer if user is registered and password is correct.
    *
-   * @param email a users email
+   * @param email    a users email
    * @param password a users password
    * @return if user is registered and password is correct
    */
@@ -55,7 +61,7 @@ public class Logic {
    * Create a new URL alias (shortened version).
    *
    * @param email an email of a user that creates the alias
-   * @param url a full URL
+   * @param url   a full URL
    * @param alias a proposed alias
    * @return a shortened URL
    */
@@ -89,7 +95,9 @@ public class Logic {
     return null;
   }
 
-  /** Deletes user alias */
+  /**
+   * Deletes user alias
+   */
   public boolean deleteUserAlias(String email, String alias) {
     List<UrlAlias> userAliases = urls.getAllAliasesForUser(email);
     for (UrlAlias userAlias : userAliases) {
@@ -104,12 +112,15 @@ public class Logic {
   /**
    * getAllAliasesForUser
    */
-  public List<UrlAlias> getUserAliases(String email){
+  public List<UrlAlias> getUserAliases(String email) {
     return urls.getAllAliasesForUser(email);
   }
 
-  /** Error for situation when we are trying to register already registered user. */
+  /**
+   * Error for situation when we are trying to register already registered user.
+   */
   public static class UserIsAlreadyCreated extends Throwable {
+
     public UserIsAlreadyCreated() {
       super("User with such email is already created");
     }

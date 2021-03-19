@@ -46,12 +46,12 @@ class LogicTest {
     Logic logic = createLogic(users);
 
     assertThatThrownBy(
-            () -> {
-              // WHEN
-              logic.createNewUser("aaa@bbb.com", "password");
-            })
-        // THEN
-        .isInstanceOf(Logic.UserIsAlreadyCreated.class);
+      () -> {
+        // WHEN
+        logic.createNewUser("aaa@bbb.com", "password");
+      })
+      // THEN
+      .isInstanceOf(Logic.UserIsAlreadyCreated.class);
   }
 
   @Test
@@ -90,10 +90,10 @@ class LogicTest {
 
     // THEN
     assertThatThrownBy(
-            () -> {
-              logic.createNewAlias("ddd@bbb.com", "http://d.com/laaaang_url", "short");
-            })
-        .isInstanceOf(AliasAlreadyExist.class);
+      () -> {
+        logic.createNewAlias("ddd@bbb.com", "http://d.com/laaaang_url", "short");
+      })
+      .isInstanceOf(AliasAlreadyExist.class);
   }
 
   @Test
@@ -123,7 +123,7 @@ class LogicTest {
   }
 
   @Test
-  void shouldReturnUserAliases(){
+  void shouldReturnUserAliases() {
     // GIVEN
     Logic logic = createLogic();
 
