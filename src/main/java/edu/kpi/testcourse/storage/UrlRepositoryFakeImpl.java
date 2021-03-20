@@ -29,11 +29,14 @@ public class UrlRepositoryFakeImpl implements UrlRepository {
   }
 
   @Override
-  public void deleteUrlAlias(String email, String alias) {
+  public void deleteUrlAlias(String email, String alias) throws PermissionDenied {
     UrlAlias savedAlias = aliases.get(alias);
     if (savedAlias != null && savedAlias.email().equals(email)) {
       aliases.remove(alias);
     }
+    else {
+           throw new PermissionDenied();
+         }
   }
 
   @Override

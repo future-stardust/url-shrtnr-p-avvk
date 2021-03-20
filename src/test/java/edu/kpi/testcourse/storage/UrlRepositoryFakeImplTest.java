@@ -11,31 +11,33 @@ class UrlRepositoryFakeImplTest {
 
   @Test
   void shouldCreateAlias() {
-    //GIVEN
+    // GIVEN
     UrlRepository repo = new UrlRepositoryFakeImpl();
 
-    //WHEN
+    // WHEN
     UrlAlias alias = new UrlAlias("http://r.com/short", "http://g.com/long", "aaa@bbb.com");
     repo.createUrlAlias(alias);
 
-    //THEN
+    // THEN
     assertThat(repo.findUrlAlias("http://r.com/short")).isEqualTo(alias);
   }
 
   @Test
   void shouldNotAllowToCreateSameAliases() {
-    //GIVEN
+    // GIVEN
     UrlRepository repo = new UrlRepositoryFakeImpl();
 
-    //WHEN
+    // WHEN
     UrlAlias alias1 = new UrlAlias("http://r.com/short", "http://g.com/long1", "aaa@bbb.com");
     repo.createUrlAlias(alias1);
 
-    //THEN
+    // THEN
     UrlAlias alias2 = new UrlAlias("http://r.com/short", "http://g.com/long2", "aaa@bbb.com");
-    assertThatThrownBy(() -> {
-      repo.createUrlAlias(alias2);
-    }).isInstanceOf(UrlRepository.AliasAlreadyExist.class);
+    assertThatThrownBy(
+            () -> {
+              repo.createUrlAlias(alias2);
+            })
+        .isInstanceOf(UrlRepository.AliasAlreadyExist.class);
   }
 
   @Test
@@ -59,9 +61,11 @@ class UrlRepositoryFakeImplTest {
     UrlAlias alias = new UrlAlias("http://r.com/short", "http://g.com/long", "aaa@bbb.com");
     repo.createUrlAlias(alias);
     // THEN
-    repo.deleteUrlAlias("bbb@ccc.com", "http://r.com/short");
-    repo.deleteUrlAlias("aaa@bbb.com", "http://r.com/anothershort");
-    assertThat(repo.findUrlAlias("http://r.com/short")).isEqualTo(alias);
+    assertThatThrownBy(
+            () -> {
+              repo.deleteUrlAlias("bbb@ccc.com", "http://r.com/short");
+            })
+        .isInstanceOf(UrlRepository.PermissionDenied.class);
   }
 
   @Test
@@ -78,6 +82,4 @@ class UrlRepositoryFakeImplTest {
     // THEN
     assertThat(repo.getAllAliasesForUser("aaa@bbb.com")).containsExactlyInAnyOrder(alias1, alias2);
   }
-
-
 }
